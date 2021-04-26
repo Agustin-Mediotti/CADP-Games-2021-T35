@@ -20,7 +20,17 @@ end;
 procedure leerInstruccion(var num : integer);
 begin
     writeln('-----------------------------------------------------------------');
-    writeln('Ingrese 1 para procesar los datos desde el comienzo, o cualuier otro dígito para salir');
+    writeln('Ingrese <1> para procesar los datos desde el comienzo');
+    writeln('Ingrese <2> Cantidad total de empleados');
+    writeln('Ingrese <3> Cantidad de empleados cuyo salario es menor a 300 dolares');
+    writeln('Ingrese <4> Salario promedio de los empleados');
+    writeln('Ingrese <5> Cantidad de veces que aparece el digito 1 en el legajo del empleado con mayor salario');
+    writeln('Ingrese <6> DNI de los dos empleados con menor salario');
+    writeln('Ingrese <7> Cantidad de empleados cuyos legajos posee todos digitos pares o todos digitos impares');
+    writeln('Ingrese <8> Porcentaje de empleados de mas de 50 años y que cobran menos de 600 dolares');
+    writeln('Ingrese <9> Cantidad de veces que aparece el digito 0 entre todos los legajos.');
+    writeln('Ingrese <10> Cantidad de veces en las que un empleado cobra mas del doble del empleado anterior del listado');
+    writeln('-----------------------------------------------------------------');
     readln(num);
     if (num <> CONTINUAR) then
 		writeln('Ciao!!!')
