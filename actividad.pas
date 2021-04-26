@@ -45,8 +45,9 @@ var
   num : integer;
 begin
     leerInstruccion(num);
-    while (num = 1) do begin
-		CADPVolverAlInicio('DatosGrupo'); { <<--- comienza la lectura de datos desde el principio, y nos asegura que se procesarán todos los datos. El parámetro indica el nombre del archivo a procesar }
+    case num of
+				1:CADPVolverAlInicio('DatosGrupo'); { <<--- comienza la lectura de datos desde el principio, y nos asegura que se procesarán todos los datos. El parámetro indica el nombre del archivo a procesar }
+			end;
 		repeat
 		  CADPleerDato(dato,fin);		   { <<---- este modulo retorna un registro ya cargado en el parámetro dato, y un boolean en el parámetro fin, indicando si quedan mas datos por leer }
 		  imprimirdato(dato);
@@ -54,7 +55,6 @@ begin
 		CADPfinalizarLectura();            { <<---- una vez que se procesó todo el archivo, hay que cerrarlo correctamente }
 		
 		leerInstruccion(num);
-    end;
     
 
 end.
