@@ -15,7 +15,7 @@ salarioMin= record
 		dniMin1, dniMin2,DNI: string;
 		i,SalarioMin1,SalarioMin2,Salario: integer;
 	end;
-	
+
 {-----------------Procedures---------------}
 
 { procedure de ejemplo que imprime un registro completo }
@@ -44,6 +44,25 @@ Begin
     End;
 End;
 
+{ Procedure de Instruccion }
+
+Procedure leerInstruccion(Var num : integer);
+Begin
+
+  readln(num);
+  {If ((num < 0) And (num >= 10)) Then
+    writeln('-->Cerrando el programa<--');}
+
+End;
+
+procedure LegEmple(a:Tdatos; var SalarioMax:real; var legajoMax:integer);
+begin
+  if (a.salario>SalarioMax) then begin
+    SalarioMax:=a.salario;
+    legajoMax:=a.legajo;
+  end;
+end;
+
 {-----------------Functions---------------}
 
 Function salarioProm(salariosTotal: Longint; empleadosTotal: integer): real;
@@ -51,11 +70,44 @@ Begin
   salarioProm := (salariosTotal/empleadosTotal);
 End;
 
-{-------------------Menu---------------------}
+function cantidaduno (legajoMax:integer):integer;
+var
+  dig:integer;
+  cantuno:integer;
+begin
+  dig:=0;
+  cantuno:=0;
+  while (legajoMax<>0) do begin
+    dig:=legajoMax mod 10;
+    if (dig=1) then cantuno:=cantuno+1;
+    legajoMax:=legajoMax div 10;
+  end;
+  cantidaduno:=cantuno;
+end;
 
-Procedure leerInstruccion(Var num : integer);
+{-----------Variables-Globales--------------}
+
+Var 
+	dato : Tdatos;
+  fin : boolean;
+  num,legajoMax,digitosuno,empleadosTotal,cantEmpleados300: integer;
+  salarioMax,salarioPromedio:real;
+  salariosTotal: Longint;
+
 Begin
-	writeln('');
+
+{---------Inicializacion-de-Variables----------}
+
+  empleadosTotal := 0;
+  cantEmpleados300 := 0;
+  salariosTotal := 0;
+  salarioPromedio := 0;
+  digitosuno:=0;
+  salarioMax:=-1;
+  
+  {------------------Menu-------------------------}
+  
+  writeln('Grupo 35 - Agustin Mediotti, Gian Marcello, Emmanuel Marcello');
   writeln('-----------------------------------------------------------------');
   writeln('Ingrese <1> Cantidad total de empleados');
   writeln('Ingrese <2> Cantidad de empleados cuyo salario es menor a 300 dolares');
@@ -69,32 +121,6 @@ Begin
   writeln('Ingrese <0> Para finalizar');
   writeln('-----------------------------------------------------------------');
   writeln('');
-  readln(num);
-  {If ((num < 0) And (num >= 10)) Then
-    writeln('-->Cerrando el programa<--');}
-
-End;
-
-
-{-----------Variables-Globales--------------}
-
-Var 
-  dato : Tdatos;
-  fin : boolean;
-  num : integer;
-  empleadosTotal: integer;
-  cantEmpleados300: integer;
-  salariosTotal: Longint;
-  salarioPromedio: real;
-
-Begin
-
-{---------Inicializacion-de-Variables----------}
-
-  empleadosTotal := 0;
-  cantEmpleados300 := 0;
-  salariosTotal := 0;
-  salarioPromedio := 0;
 
   leerInstruccion(num); // Inicia el programa
 
@@ -110,7 +136,6 @@ Begin
 				writeln('');
 				writeln('Cantidad total de empleados es: ', empleadosTotal);
 				CADPfinalizarLectura(); { <<---- una vez que se procesó todo el archivo, hay que cerrarlo correctamente }
-				//leerInstruccion(num);
 			End
 
 			Else If (num=2) Then
@@ -126,7 +151,6 @@ Begin
 						 writeln('');
 						 writeln('Cantidad de empleados cuyo salario es menor a 300 dolares es de: ', cantEmpleados300);
 						 CADPfinalizarLectura();
-						 //leerInstruccion(num);
 					 End
 
 		Else If (num=3) Then
@@ -141,17 +165,19 @@ Begin
 						 writeln('');
 						 writeln('El salario promedio de los empleados es $: ',salarioPromedio:2:2);
 						 CADPfinalizarLectura();
-						 //leerInstruccion(num);
-					 End;
+					 End
 
-		{Else If (num=4) Then
+		Else If (num=4) Then
 					 Begin
 						 CADPVolverAlInicio('DatosGrupo');
 						 Repeat
 							 CADPleerDato(dato,fin);
+							 LegEmple(dato,SalarioMax,legajoMax);
 						 Until (fin);
-					 End;}
-					 
+						 digitosuno:=cantidaduno(legajoMax);
+						 writeln('La cantidad de digitos 1 que tiene el legajo del empleado con mayor salario (',legajoMax,') es: ',digitosuno);
+					 End;
+
 		 {Else If (num=5) Then
 					 Begin
 						 CADPVolverAlInicio('DatosGrupo');
