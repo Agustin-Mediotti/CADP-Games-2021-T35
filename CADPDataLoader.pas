@@ -1,60 +1,64 @@
-unit CADPDataLoader;
-interface
-type
-  TDatos = record
-          salario : integer;
-          edad :  integer;
-          DNI : string;
-          legajo : integer;
-        end;
-  
-   procedure CADPleerDato (var d : TDatos; var ultimo : boolean);
-   procedure CADPVolverAlInicio(miArchivo : string);
-   procedure CADPfinalizarLectura();
 
-implementation
-uses
- Sysutils;
-   
-var
-   myfile : TextFile;
-   
-   procedure CADPVolverAlInicio(miArchivo : string);
-   begin
-        Assign(myfile, miArchivo);
-        reset(myfile);
-   end; 
-   
-   procedure CADPleerDato(var d : TDatos; var ultimo : boolean);
-   begin
-      if not eof(myfile) then
-      begin
-	   readln(myfile,d.salario);
-	   readln(myfile,d.edad);
-	   readln(myfile,d.dni);
-	   readln(myfile, d.legajo);
-	   ultimo := eof(myfile);
-	  end
-      else begin
-         d.salario := -1;
-         ultimo := true;
-      end;   
-   end;
-   
-   procedure CADPfinalizarLectura();
-   begin
-      close(myfile);
-   end;
-   
+Unit CADPDataLoader;
+
+Interface
+
+Type 
+  TDatos = Record
+    salario : integer;
+    edad :  integer;
+    DNI : string;
+    legajo : integer;
+  End;
+
+Procedure CADPleerDato (Var d : TDatos; Var ultimo : boolean);
+Procedure CADPVolverAlInicio(miArchivo : String);
+Procedure CADPfinalizarLectura();
+
+Implementation
+
+Uses 
+Sysutils;
+
+Var 
+  myfile : TextFile;
+
+Procedure CADPVolverAlInicio(miArchivo : String);
+Begin
+  Assign(myfile, miArchivo);
+  reset(myfile);
+End;
+
+Procedure CADPleerDato(Var d : TDatos; Var ultimo : boolean);
+Begin
+  If Not eof(myfile) Then
+    Begin
+      readln(myfile,d.salario);
+      readln(myfile,d.edad);
+      readln(myfile,d.dni);
+      readln(myfile, d.legajo);
+      ultimo := eof(myfile);
+    End
+  Else
+    Begin
+      d.salario := -1;
+      ultimo := true;
+    End;
+End;
+
+Procedure CADPfinalizarLectura();
+Begin
+  close(myfile);
+End;
+
 initialization
-begin
+Begin
 
-end;
-  
+End;
+
 
 finalization
-begin
+Begin
 
-end;      
-end.
-
+End;
+End.
