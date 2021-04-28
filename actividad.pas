@@ -27,19 +27,19 @@ End;
 
 { Procedure de Salario mínimo}
 
-Procedure DNIsConSalarioMinimo(Salario: integer; DNI: string; Var SalarioMin1, SalarioMin2: integer; Var DNIMin1, DNIMin2: string);
+Procedure DNIsConSalarioMinimo(d:Tdatos; Salario: integer; DNI: string; Var SalarioMin1, SalarioMin2: integer; Var DNIMin1, DNIMin2: string);
 Begin
-  if(Salario<=SalarioMin1) then
+  if(d.salario<=SalarioMin2) then
   Begin
     SalarioMin2:= SalarioMin1;
-    SalarioMin1:= Salario;
+    SalarioMin1:= d.Salario;
     DNIMin2:= DNIMin1;
     DNIMin1:= DNI;
   End 
   else
-    if(salario<=SalarioMin2) then
+    if(d.salario<=SalarioMin2) then
     Begin
-      SalarioMin2:= Salario;
+      SalarioMin2:= d.Salario;
       dniMin2:= DNI;
     End;
 End;
@@ -50,8 +50,6 @@ Procedure leerInstruccion(Var num : integer);
 Begin
 
   readln(num);
-  {If ((num < 0) And (num >= 10)) Then
-    writeln('-->Cerrando el programa<--');}
 
 End;
 
@@ -63,12 +61,40 @@ begin
   end;
 end;
 
+{ Procedure de cantidad de 0 en el legajo }
+
+Procedure LegajoCant0(d:Tdatos;var Cant0: integer;legajo:integer);
+Begin
+  while (d.legajo <> 0) do begin 
+    if d.legajo MOD 10 = 0 then
+      Cant0:= Cant0+1;
+      d.legajo:= d.legajo DIV 10;
+  end;
+End;
+
 {-----------------Functions---------------}
+
+function contador(cont50y600:integer; dato:Tdatos):integer;
+begin
+  if (dato.edad>50) and (dato.salario<600) then cont50y600:=cont50y600+1;
+  contador:=cont50y600;
+end;
+
+{ mucho textooo}
+
+function promedio(cont50y600,total:integer):integer;
+begin
+    promedio:=((cont50y600*100) div total);
+end;
+
+{ mucho textooo}
 
 Function salarioProm(salariosTotal: Longint; empleadosTotal: integer): real;
 Begin
   salarioProm := (salariosTotal/empleadosTotal);
 End;
+
+{ mucho textooo}
 
 function cantidaduno (legajoMax:integer):integer;
 var
@@ -90,9 +116,10 @@ end;
 Var 
 	dato : Tdatos;
   fin : boolean;
-  num,legajoMax,digitosuno,empleadosTotal,cantEmpleados300: integer;
+  num,legajoMax,digitosuno,empleadosTotal,cantEmpleados300,cont50y600,total,SalarioMin1,SalarioMin2,Cant0,Salario: integer;
   salarioMax,salarioPromedio:real;
   salariosTotal: Longint;
+  dniMin1, dniMin2,DNI: string;
 
 Begin
 
@@ -104,10 +131,16 @@ Begin
   salarioPromedio := 0;
   digitosuno:=0;
   salarioMax:=-1;
+  cont50y600:=0;
+  total:=0;
+  Cant0:=0;
+  Salario:=0;
+  SalarioMin1:=9999;
+  SalarioMin2:=9999;
   
   {------------------Menu-------------------------}
   
-  writeln('Grupo 35 - Agustin Mediotti, Gian Marcello, Emmanuel Marcello');
+  writeln('Grupo 35 - Agustin Mediotti, Gian Marcello, Emmanuel Marcello.');
   writeln('-----------------------------------------------------------------');
   writeln('Ingrese <1> Cantidad total de empleados');
   writeln('Ingrese <2> Cantidad de empleados cuyo salario es menor a 300 dolares');
@@ -176,15 +209,40 @@ Begin
 						 Until (fin);
 						 digitosuno:=cantidaduno(legajoMax);
 						 writeln('La cantidad de digitos 1 que tiene el legajo del empleado con mayor salario (',legajoMax,') es: ',digitosuno);
-					 End;
+					 End
 
-		 {Else If (num=5) Then
+		 Else If (num=5) Then
 					 Begin
 						 CADPVolverAlInicio('DatosGrupo');
 						 Repeat
 							 CADPleerDato(dato,fin);
 						 Until (fin);
-					 End;}
+						 DNIsConSalarioMinimo(Salario,DNI,SalarioMin1,SalarioMin2,DNIMin1, DNIMin2);
+						 writeln('La cantidad de 0 que poseen todos los legajos son: ',DNIMin1, DNIMin2);
+					 End
+
+			Else if (num=7) then 
+				begin
+					CADPVolverAlInicio('DatosGrupo');
+	    Repeat
+	      CADPleerDato(dato,fin);
+					cont50y600:=contador(cont50y600,dato);
+					total:=total+1;
+	    Until (fin);
+         writeln('El porcentaje de empleados de mas de 50 anios y que cobran menos de 600 dolares es: ',promedio(cont50y600,total));
+         leerInstruccion(num);
+			End
+			
+			Else if (num=8) then 
+				begin
+					CADPVolverAlInicio('DatosGrupo');
+	    Repeat
+	      CADPleerDato(dato,fin);
+	    Until (fin);
+				LegajoCant0(Cant0,legajo);
+        writeln('El dígito 0 aparece ',cant0, ' veces entre todos los legajos');
+			End;
+
 			leerInstruccion(num);
 		End;
 
