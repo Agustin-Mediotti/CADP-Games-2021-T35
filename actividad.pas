@@ -63,12 +63,12 @@ end;
 
 { Procedure de cantidad de 0 en el legajo }
 
-Procedure LegajoCant0(d:Tdatos;var Cant0,legajo:integer);
+Procedure LegajoCant0(d:Tdatos;var Cant0:integer);
 Begin
   while (d.legajo <> 0) do begin 
-    if d.legajo MOD 10 = 0 then
+    if d.legajo mod 10 = 0 then
       Cant0:= Cant0+1;
-      d.legajo:= d.legajo DIV 10;
+      d.legajo:= d.legajo div 10;
   end;
 End;
 
@@ -165,7 +165,7 @@ end;
 Var 
   dato : Tdatos;
   fin : boolean;
-  num,legajoMax,digitosuno,empleadosTotal,cantEmpleados300,cont50y600,total,SalarioMin1,SalarioMin2,Cant0,Salario,legajo,cantImpar,cantPar,CantCobranDoble,DobleSalario: integer;
+  num,legajoMax,digitosuno,empleadosTotal,cantEmpleados300,cont50y600,total,SalarioMin1,SalarioMin2,Cant0,Salario,cantImpar,cantPar,CantCobranDoble,DobleSalario: integer;
   salarioMax,salarioPromedio:real;
   salariosTotal: Longint;
   dniMin1, dniMin2,DNI: string;
@@ -261,29 +261,32 @@ Begin
 						 Until (fin);
 						 digitosuno:=cantidaduno(legajoMax);
 						 writeln('La cantidad de digitos 1 que tiene el legajo del empleado con mayor salario (',legajoMax,') es: ',digitosuno);
-					 End
+					         CADPfinalizarLectura();
+					End
 
 		 Else If (num=5) Then
 					 Begin
 						 CADPVolverAlInicio('DatosGrupo');
 						 Repeat
 							 CADPleerDato(dato,fin);
-						 Until (fin);
-						 DNIsConSalarioMinimo(dato,Salario,DNI,SalarioMin1,SalarioMin2,DNIMin1, DNIMin2);
+						         DNIsConSalarioMinimo(dato,Salario,DNI,SalarioMin1,SalarioMin2,DNIMin1, DNIMin2);
+						 Until (fin);						 
 						 writeln('La cantidad de 0 que poseen todos los legajos son: ',DNIMin1, DNIMin2);
+					         CADPfinalizarLectura();
 					 End
 		 Else if (num=6) then
 			         begin
 				 cantImpar:=0;
-                 cantPar:=0;
+                                 cantPar:=0;
 				 CADPVolverAlInicio('DatosGrupo');
 				 Repeat
 				 CADPleerDato(dato,fin);
 				 ParoImpar(dato,cantImpar,cantPar);
 				 Until (fin);
 				 writeln('Cantidad de legajos con solo digitos impar: ',cantImpar);
-                 writeln('Cantidad de legajos con solo digitos par: ',cantPar);  
-				 End
+                                 writeln('Cantidad de legajos con solo digitos par: ',cantPar);  
+				 CADPfinalizarLectura();
+				End
 
 		 Else if (num=7) then 
 				begin
@@ -294,6 +297,7 @@ Begin
 							total:=total+1;
 				Until (fin);
 				 writeln('El porcentaje de empleados de mas de 50 anios y que cobran menos de 600 dolares es: ',promedio(cont50y600,total));
+					CADPfinalizarLectura();
 					End
 			
 			Else if (num=8) then 
@@ -301,9 +305,11 @@ Begin
 					CADPVolverAlInicio('DatosGrupo');
 				Repeat
 				  CADPleerDato(dato,fin);
-				Until (fin);
-						LegajoCant0(dato,Cant0,legajo);
+				  LegajoCant0(dato,Cant0);
+				  Until (fin);
+						LegajoCant0(dato,Cant0);
 				writeln('El dígito 0 aparece ',cant0, ' veces entre todos los legajos');
+					CADPfinalizarLectura();
 					End
 
 
@@ -317,7 +323,9 @@ Begin
 					Until (fin);
 							
 					writeln('las veces en las que un empleado cobra mas del doble del anterior son: ',CantCobranDoble);
-					leerInstruccion(num);
+					CADPfinalizarLectura();
+					
 				End;
+	leerInstruccion(num);			
 
 End.
