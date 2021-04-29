@@ -173,20 +173,6 @@ Var
 Begin
 
 {---------Inicializacion-de-Variables----------}
-  empleadosTotal := 0;
-  cantEmpleados300 := 0;
-  salariosTotal := 0;
-  salarioPromedio := 0;
-  digitosuno:=0;
-  salarioMax:=-1;
-  cont50y600:=0;
-  total:=0;
-  Cant0:=0;
-  Salario:=0;
-  SalarioMin1:=9999;
-  SalarioMin2:=9999;
-  DNI:='';
-  CantCobranDoble:=0;
   DobleSalario:=0;
   CantCobranDoble:= 0;
   
@@ -213,7 +199,9 @@ Begin
 		Begin
 		If (num=1) Then
 			Begin
+				 empleadosTotal := 0;
 				CADPVolverAlInicio('DatosGrupo');
+				
 				Repeat
 					CADPleerDato(dato,fin); { <<--- comienza la lectura de datos desde el principio, y nos asegura que se procesarán todos los datos. El parámetro indica el nombre del archivo a procesar }
 					empleadosTotal := empleadosTotal+1; { <<---- este modulo retorna un registro ya cargado en el parámetro dato, y un boolean en el parámetro fin, indicando si quedan mas datos por leer }
@@ -225,6 +213,7 @@ Begin
 
 			Else If (num=2) Then
 					 Begin
+						 cantEmpleados300 := 0;
 						 CADPVolverAlInicio('DatosGrupo');
 						 Repeat
 							 CADPleerDato(dato,fin);
@@ -240,6 +229,9 @@ Begin
 
 		Else If (num=3) Then
 					 Begin
+						 empleadosTotal:=0;
+						 salariosTotal:=0;
+						 salariosPromedio:=0;
 						 CADPVolverAlInicio('DatosGrupo');
 						 Repeat
 							 CADPleerDato(dato,fin);
@@ -254,6 +246,8 @@ Begin
 
 		Else If (num=4) Then
 					 Begin
+						 salarioMax:=-1;
+						 digitosuno:=0;
 						 CADPVolverAlInicio('DatosGrupo');
 						 Repeat
 							 CADPleerDato(dato,fin);
@@ -266,6 +260,9 @@ Begin
 
 		 Else If (num=5) Then
 					 Begin
+						 Salario:=0;
+						 SalarioMin1:=9999;
+                                                 SalarioMin2:=9999;
 						 CADPVolverAlInicio('DatosGrupo');
 						 Repeat
 							 CADPleerDato(dato,fin);
@@ -290,6 +287,8 @@ Begin
 
 		 Else if (num=7) then 
 				begin
+					total:=0;
+					cont50y600:=0;
 					CADPVolverAlInicio('DatosGrupo');
 				Repeat
 				  CADPleerDato(dato,fin);
@@ -302,6 +301,7 @@ Begin
 			
 			Else if (num=8) then 
 				begin
+					Cant0:=0;
 					CADPVolverAlInicio('DatosGrupo');
 				Repeat
 				  CADPleerDato(dato,fin);
