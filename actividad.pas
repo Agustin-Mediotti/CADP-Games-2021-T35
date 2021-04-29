@@ -63,7 +63,7 @@ end;
 
 { Procedure de cantidad de 0 en el legajo }
 
-Procedure LegajoCant0(d:Tdatos;var Cant0: integer;legajo:integer);
+Procedure LegajoCant0(d:Tdatos;var Cant0,legajo:integer);
 Begin
   while (d.legajo <> 0) do begin 
     if d.legajo MOD 10 = 0 then
@@ -114,9 +114,9 @@ end;
 {-----------Variables-Globales--------------}
 
 Var 
-	dato : Tdatos;
+  dato : Tdatos;
   fin : boolean;
-  num,legajoMax,digitosuno,empleadosTotal,cantEmpleados300,cont50y600,total,SalarioMin1,SalarioMin2,Cant0,Salario: integer;
+  num,legajoMax,digitosuno,empleadosTotal,cantEmpleados300,cont50y600,total,SalarioMin1,SalarioMin2,Cant0,Salario,legajo: integer;
   salarioMax,salarioPromedio:real;
   salariosTotal: Longint;
   dniMin1, dniMin2,DNI: string;
@@ -137,6 +137,7 @@ Begin
   Salario:=0;
   SalarioMin1:=9999;
   SalarioMin2:=9999;
+  DNI:='';
   
   {------------------Menu-------------------------}
   
@@ -217,34 +218,34 @@ Begin
 						 Repeat
 							 CADPleerDato(dato,fin);
 						 Until (fin);
-						 DNIsConSalarioMinimo(Salario,DNI,SalarioMin1,SalarioMin2,DNIMin1, DNIMin2);
+						 DNIsConSalarioMinimo(dato,Salario,DNI,SalarioMin1,SalarioMin2,DNIMin1, DNIMin2);
 						 writeln('La cantidad de 0 que poseen todos los legajos son: ',DNIMin1, DNIMin2);
 					 End
 
-			Else if (num=7) then 
+		 Else if (num=7) then 
 				begin
 					CADPVolverAlInicio('DatosGrupo');
-	    Repeat
-	      CADPleerDato(dato,fin);
-					cont50y600:=contador(cont50y600,dato);
-					total:=total+1;
-	    Until (fin);
-         writeln('El porcentaje de empleados de mas de 50 anios y que cobran menos de 600 dolares es: ',promedio(cont50y600,total));
-         leerInstruccion(num);
-			End
+				Repeat
+				  CADPleerDato(dato,fin);
+							cont50y600:=contador(cont50y600,dato);
+							total:=total+1;
+				Until (fin);
+				 writeln('El porcentaje de empleados de mas de 50 anios y que cobran menos de 600 dolares es: ',promedio(cont50y600,total));
+				 leerInstruccion(num);
+					End
 			
 			Else if (num=8) then 
 				begin
 					CADPVolverAlInicio('DatosGrupo');
-	    Repeat
-	      CADPleerDato(dato,fin);
-	    Until (fin);
-				LegajoCant0(Cant0,legajo);
-        writeln('El dígito 0 aparece ',cant0, ' veces entre todos los legajos');
-			End;
+				Repeat
+				  CADPleerDato(dato,fin);
+				Until (fin);
+						LegajoCant0(dato,Cant0,legajo);
+				writeln('El dígito 0 aparece ',cant0, ' veces entre todos los legajos');
+					End;
 
-			leerInstruccion(num);
-		End;
+					leerInstruccion(num);
+				End;
 
 
 End.
