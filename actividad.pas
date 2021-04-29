@@ -108,6 +108,27 @@ begin
   contador:=cont50y600;
 end;
 
+{ Funcion de empleado cobra doble }
+
+function EmpleadoCobradoble(d: Tdatos): integer;
+ var
+   CantCobranDoble: integer;
+   DobleSalario: integer;
+   i: integer;
+ begin
+  CantCobranDoble:=0;
+  DobleSalario:=0;
+  CantCobranDoble:= 0;
+  for i:= 1 to 5 do
+  begin
+    if d.Salario > DobleSalario then
+    begin
+      DobleSalario:= d.Salario;
+      CantCobranDoble:= CantCobranDoble + 1;
+    end;
+  end;
+ end;
+
 { mucho textooo}
 
 function promedio(cont50y600,total:integer):integer;
@@ -144,7 +165,7 @@ end;
 Var 
   dato : Tdatos;
   fin : boolean;
-  num,legajoMax,digitosuno,empleadosTotal,cantEmpleados300,cont50y600,total,SalarioMin1,SalarioMin2,Cant0,Salario,legajo,cantImpar,cantPar: integer;
+  num,legajoMax,digitosuno,empleadosTotal,cantEmpleados300,cont50y600,total,SalarioMin1,SalarioMin2,Cant0,Salario,legajo,cantImpar,cantPar,CantCobranDoble,DobleSalario: integer;
   salarioMax,salarioPromedio:real;
   salariosTotal: Longint;
   dniMin1, dniMin2,DNI: string;
@@ -152,7 +173,6 @@ Var
 Begin
 
 {---------Inicializacion-de-Variables----------}
-
   empleadosTotal := 0;
   cantEmpleados300 := 0;
   salariosTotal := 0;
@@ -166,6 +186,9 @@ Begin
   SalarioMin1:=9999;
   SalarioMin2:=9999;
   DNI:='';
+  CantCobranDoble:=0;
+  DobleSalario:=0;
+  CantCobranDoble:= 0;
   
   {------------------Menu-------------------------}
   
@@ -252,14 +275,14 @@ Begin
 		 Else if (num=6) then
 			         begin
 				 cantImpar:=0;
-                                 cantPar:=0;
+                 cantPar:=0;
 				 CADPVolverAlInicio('DatosGrupo');
 				 Repeat
 				 CADPleerDato(dato,fin);
 				 ParoImpar(dato,cantImpar,cantPar);
 				 Until (fin);
 				 writeln('Cantidad de legajos con solo digitos impar: ',cantImpar);
-                                 writeln('Cantidad de legajos con solo digitos par: ',cantPar);  
+                 writeln('Cantidad de legajos con solo digitos par: ',cantPar);  
 				 End
 
 		 Else if (num=7) then 
@@ -271,7 +294,6 @@ Begin
 							total:=total+1;
 				Until (fin);
 				 writeln('El porcentaje de empleados de mas de 50 anios y que cobran menos de 600 dolares es: ',promedio(cont50y600,total));
-				 leerInstruccion(num);
 					End
 			
 			Else if (num=8) then 
@@ -282,10 +304,20 @@ Begin
 				Until (fin);
 						LegajoCant0(dato,Cant0,legajo);
 				writeln('El dígito 0 aparece ',cant0, ' veces entre todos los legajos');
-					End;
+					End
 
+
+			Else if (num=9) then 
+				begin
+					  CADPVolverAlInicio('DatosGrupo');
+					Repeat
+					  EmpleadoCobraDoble(dato);
+					  DobleSalario:= dato.Salario * 2;
+					  CADPleerDato(dato,fin);
+					Until (fin);
+							
+					writeln('las veces en las que un empleado cobra mas del doble del anterior son: ',CantCobranDoble);
 					leerInstruccion(num);
 				End;
-
 
 End.
