@@ -72,6 +72,34 @@ Begin
   end;
 End;
 
+{Contador de legajo con todos los digitos Par o todos los digitos Impar}
+
+procedure ParoImpar(a:Tdatos;var cantimp,cantpar:integer);
+var
+  dig:integer;
+begin
+   while (a.legajo<>0) do begin
+     dig:=a.legajo mod 10;
+     if (dig mod 2=0) then begin
+       while (a.legajo<>0) and (dig mod 2=0) do begin
+         a.legajo:=a.legajo div 10;
+         if (a.legajo=0) then cantpar:=cantpar+1
+         else dig:=a.legajo mod 10;
+       end;
+       end
+       else begin
+         if (dig mod 2=1) then begin
+           while (a.legajo<>0) and (dig mod 2=1) do begin
+           a.legajo:=a.legajo div 10;
+           if (a.legajo=0) then cantimp:=cantimp+1
+           else dig:=a.legajo mod 10;
+          end;
+         end;
+       end;
+   end;
+end;
+{---------------------------------------------------------}
+
 {-----------------Functions---------------}
 
 function contador(cont50y600:integer; dato:Tdatos):integer;
@@ -116,7 +144,7 @@ end;
 Var 
   dato : Tdatos;
   fin : boolean;
-  num,legajoMax,digitosuno,empleadosTotal,cantEmpleados300,cont50y600,total,SalarioMin1,SalarioMin2,Cant0,Salario,legajo: integer;
+  num,legajoMax,digitosuno,empleadosTotal,cantEmpleados300,cont50y600,total,SalarioMin1,SalarioMin2,Cant0,Salario,legajo,cantImpar,cantPar: integer;
   salarioMax,salarioPromedio:real;
   salariosTotal: Longint;
   dniMin1, dniMin2,DNI: string;
@@ -221,6 +249,18 @@ Begin
 						 DNIsConSalarioMinimo(dato,Salario,DNI,SalarioMin1,SalarioMin2,DNIMin1, DNIMin2);
 						 writeln('La cantidad de 0 que poseen todos los legajos son: ',DNIMin1, DNIMin2);
 					 End
+		 Else if (num=6) then
+			         begin
+				 cantImpar:=0;
+                                 cantPar:=0;
+				 CADPVolverAlInicio('DatosGrupo');
+				 Repeat
+				 CADPleerDato(dato,fin);
+				 ParoImpar(dato,cantImpar,cantPar);
+				 Until (fin);
+				 writeln('Cantidad de legajos con solo digitos impar: ',cantImpar);
+                                 writeln('Cantidad de legajos con solo digitos par: ',cantPar);  
+				 End
 
 		 Else if (num=7) then 
 				begin
