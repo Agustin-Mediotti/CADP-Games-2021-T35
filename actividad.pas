@@ -94,6 +94,8 @@ end;
 
 {-----------------Functions---------------}
 
+{ Cuenta la cantidad de empleados con mas de 50 años y salario mayor a 600$ }
+
 function contador(cont50y600:integer; dato:Tdatos):integer;
 begin
   if (dato.edad>50) and (dato.salario<600) then cont50y600:=cont50y600+1;
@@ -111,21 +113,21 @@ begin
     EmpleadoCobradoble:=cant;
  end;
 
-{ mucho textooo}
+{ Calcula el promedio de empleados > 50 años y > 600$ }
 
 function promedio(cont50y600,total:integer):integer;
 begin
     promedio:=((cont50y600*100) div total);
 end;
 
-{ mucho textooo}
+{ Calcula el promedio de los salarios }
 
 Function salarioProm(salariosTotal: Longint; empleadosTotal: integer): real;
 Begin
   salarioProm := (salariosTotal/empleadosTotal);
 End;
 
-{ mucho textooo}
+{ Calcula la cantindad de digitos 1 en legajo maximo }
 
 function cantidaduno (legajoMax:integer):integer;
 var
@@ -201,7 +203,7 @@ Begin
 							 CADPleerDato(dato,fin);
 							 If (dato.salario < 300) Then
 								 Begin
-									 cantEmpleados300 := cantEmpleados300+1;
+									cantEmpleados300 := cantEmpleados300+1;
 								 End;
 						 Until (fin);
 						 writeln('');
