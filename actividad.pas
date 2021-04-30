@@ -8,14 +8,6 @@ Program CADPGames;
 Uses 
 CADPDataLoader;
 
-{------------------Type-------------------}
-
-type 
-salarioMin= record
-		dniMin1, dniMin2,DNI: string;
-		i,SalarioMin1,SalarioMin2,Salario: integer;
-	end;
-
 {-----------------Procedures---------------}
 
 { procedure de ejemplo que imprime un registro completo }
@@ -27,20 +19,20 @@ End;
 
 { Procedure de Salario mínimo}
 
-Procedure DNIsConSalarioMinimo(d:Tdatos; Salario: integer; DNI: string; Var SalarioMin1, SalarioMin2: integer; Var DNIMin1, DNIMin2: string);
+Procedure DNIsConSalarioMinimo(d:Tdatos; DNI: string; Var SalarioMin1, SalarioMin2: integer; Var DNIMin1, DNIMin2: string);
 Begin
-  if(d.salario<=SalarioMin2) then
-  Begin
-    SalarioMin2:= SalarioMin1;
-    SalarioMin1:= d.Salario;
-    DNIMin2:= DNIMin1;
-    DNIMin1:= DNI;
-  End 
+  if(d.salario<=SalarioMin1) then
+	  Begin
+		SalarioMin2:= SalarioMin1;
+		SalarioMin1:= d.Salario;
+		DNIMin2:= DNIMin1;
+		DNIMin1:= d.DNI;
+	  End 
   else
     if(d.salario<=SalarioMin2) then
     Begin
       SalarioMin2:= d.Salario;
-      dniMin2:= DNI;
+      dniMin2:= d.DNI;
     End;
 End;
 
@@ -63,12 +55,12 @@ end;
 
 { Procedure de cantidad de 0 en el legajo }
 
-Procedure LegajoCant0(d:Tdatos;var Cant0,legajo:integer);
+Procedure LegajoCant0(d:Tdatos;var Cant0:integer);
 Begin
   while (d.legajo <> 0) do begin 
-    if d.legajo MOD 10 = 0 then
+    if d.legajo mod 10 = 0 then
       Cant0:= Cant0+1;
-      d.legajo:= d.legajo DIV 10;
+      d.legajo:= d.legajo div 10;
   end;
 End;
 
@@ -108,6 +100,17 @@ begin
   contador:=cont50y600;
 end;
 
+{ Funcion de empleado cobra doble }
+
+function EmpleadoCobradoble(d: Tdatos; Doble:integer): integer;
+var
+  cant:integer;
+begin
+    cant:=0;
+    if (d.Salario > Doble*2) then cant:= cant + 1;
+    EmpleadoCobradoble:=cant;
+ end;
+
 { mucho textooo}
 
 function promedio(cont50y600,total:integer):integer;
@@ -144,7 +147,7 @@ end;
 Var 
   dato : Tdatos;
   fin : boolean;
-  num,legajoMax,digitosuno,empleadosTotal,cantEmpleados300,cont50y600,total,SalarioMin1,SalarioMin2,Cant0,Salario,legajo,cantImpar,cantPar: integer;
+  num,legajoMax,digitosuno,empleadosTotal,cantEmpleados300,cont50y600,total,SalarioMin1,SalarioMin2,Cant0,cantImpar,cantPar,CantCobranDoble,DobleSalario: integer;
   salarioMax,salarioPromedio:real;
   salariosTotal: Longint;
   dniMin1, dniMin2,DNI: string;
@@ -152,20 +155,8 @@ Var
 Begin
 
 {---------Inicializacion-de-Variables----------}
-
-  empleadosTotal := 0;
-  cantEmpleados300 := 0;
-  salariosTotal := 0;
-  salarioPromedio := 0;
-  digitosuno:=0;
-  salarioMax:=-1;
-  cont50y600:=0;
-  total:=0;
-  Cant0:=0;
-  Salario:=0;
-  SalarioMin1:=9999;
-  SalarioMin2:=9999;
-  DNI:='';
+  DobleSalario:=0;
+  CantCobranDoble:= 0;
   
   {------------------Menu-------------------------}
   
@@ -190,7 +181,9 @@ Begin
 		Begin
 		If (num=1) Then
 			Begin
+				 empleadosTotal := 0;
 				CADPVolverAlInicio('DatosGrupo');
+				
 				Repeat
 					CADPleerDato(dato,fin); { <<--- comienza la lectura de datos desde el principio, y nos asegura que se procesarán todos los datos. El parámetro indica el nombre del archivo a procesar }
 					empleadosTotal := empleadosTotal+1; { <<---- este modulo retorna un registro ya cargado en el parámetro dato, y un boolean en el parámetro fin, indicando si quedan mas datos por leer }
@@ -202,6 +195,7 @@ Begin
 
 			Else If (num=2) Then
 					 Begin
+						 cantEmpleados300 := 0;
 						 CADPVolverAlInicio('DatosGrupo');
 						 Repeat
 							 CADPleerDato(dato,fin);
@@ -217,6 +211,8 @@ Begin
 
 		Else If (num=3) Then
 					 Begin
+						 empleadosTotal:=0;
+						 salariosTotal:=0;
 						 CADPVolverAlInicio('DatosGrupo');
 						 Repeat
 							 CADPleerDato(dato,fin);
@@ -231,6 +227,8 @@ Begin
 
 		Else If (num=4) Then
 					 Begin
+						 salarioMax:=-1;
+						 digitosuno:=0;
 						 CADPVolverAlInicio('DatosGrupo');
 						 Repeat
 							 CADPleerDato(dato,fin);
@@ -238,16 +236,21 @@ Begin
 						 Until (fin);
 						 digitosuno:=cantidaduno(legajoMax);
 						 writeln('La cantidad de digitos 1 que tiene el legajo del empleado con mayor salario (',legajoMax,') es: ',digitosuno);
-					 End
+					         CADPfinalizarLectura();
+					End
 
 		 Else If (num=5) Then
 					 Begin
+						 DNI:='';
+						 SalarioMin1:=9999;
+                         SalarioMin2:=9999;
 						 CADPVolverAlInicio('DatosGrupo');
 						 Repeat
 							 CADPleerDato(dato,fin);
-						 Until (fin);
-						 DNIsConSalarioMinimo(dato,Salario,DNI,SalarioMin1,SalarioMin2,DNIMin1, DNIMin2);
-						 writeln('La cantidad de 0 que poseen todos los legajos son: ',DNIMin1, DNIMin2);
+						         DNIsConSalarioMinimo(dato,DNI,SalarioMin1,SalarioMin2,DNIMin1, DNIMin2);
+						 Until (fin);						 
+						 writeln('El DNI del empleado con salario mas chico es: ',dniMin1,' y el segundo menor es: ', DNIMin2);
+					         CADPfinalizarLectura();
 					 End
 		 Else if (num=6) then
 			         begin
@@ -260,10 +263,13 @@ Begin
 				 Until (fin);
 				 writeln('Cantidad de legajos con solo digitos impar: ',cantImpar);
                                  writeln('Cantidad de legajos con solo digitos par: ',cantPar);  
-				 End
+				 CADPfinalizarLectura();
+				End
 
 		 Else if (num=7) then 
 				begin
+					total:=0;
+					cont50y600:=0;
 					CADPVolverAlInicio('DatosGrupo');
 				Repeat
 				  CADPleerDato(dato,fin);
@@ -271,21 +277,39 @@ Begin
 							total:=total+1;
 				Until (fin);
 				 writeln('El porcentaje de empleados de mas de 50 anios y que cobran menos de 600 dolares es: ',promedio(cont50y600,total));
-				 leerInstruccion(num);
+					CADPfinalizarLectura();
 					End
 			
 			Else if (num=8) then 
 				begin
+					Cant0:=0;
 					CADPVolverAlInicio('DatosGrupo');
 				Repeat
 				  CADPleerDato(dato,fin);
-				Until (fin);
-						LegajoCant0(dato,Cant0,legajo);
+				  LegajoCant0(dato,Cant0);
+				  Until (fin);
+						LegajoCant0(dato,Cant0);
 				writeln('El dígito 0 aparece ',cant0, ' veces entre todos los legajos');
-					End;
+					CADPfinalizarLectura();
+					End
 
-					leerInstruccion(num);
-				End;
 
+			Else if (num=9) then 
+                begin
+                      CADPVolverAlInicio('DatosGrupo');
+                      CADPleerDato(dato,fin);
+                      DobleSalario:=dato.salario;
+                    Repeat
+                                          CADPleerDato(dato,fin);
+                      CantCobranDoble:=CantCobranDoble+EmpleadoCobraDoble(dato,DobleSalario);
+                      DobleSalario:=dato.salario;
+                    Until (fin);
+
+                    writeln('las veces en las que un empleado cobra mas del doble del anterior son: ',CantCobranDoble);
+                    CADPfinalizarLectura();
+
+                End;
+	leerInstruccion(num);
+	end;
 
 End.
