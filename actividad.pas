@@ -300,7 +300,7 @@ Begin
                       CADPleerDato(dato,fin);
                       DobleSalario:=dato.salario;
                     Repeat
-                                          CADPleerDato(dato,fin);
+                      CADPleerDato(dato,fin);
                       CantCobranDoble:=CantCobranDoble+EmpleadoCobraDoble(dato,DobleSalario);
                       DobleSalario:=dato.salario;
                     Until (fin);
