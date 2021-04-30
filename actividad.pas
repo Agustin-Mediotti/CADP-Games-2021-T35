@@ -160,7 +160,7 @@ Begin
   
   {------------------Menu-------------------------}
   
-  writeln('Grupo 35 - Agustin Mediotti, Gian Marcello, Emmanuel Marcello.');
+  writeln('Grupo 35 - Agustin Mediotti, Gian Marcello, Emmanuel Marcello, Alvaro Sawczuc.');
   writeln('-----------------------------------------------------------------');
   writeln('Ingrese <1> Cantidad total de empleados');
   writeln('Ingrese <2> Cantidad de empleados cuyo salario es menor a 300 dolares');
