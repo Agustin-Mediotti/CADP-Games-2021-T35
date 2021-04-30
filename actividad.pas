@@ -27,15 +27,15 @@ End;
 
 { Procedure de Salario mínimo}
 
-Procedure DNIsConSalarioMinimo(d:Tdatos; Salario: integer; DNI: string; Var SalarioMin1, SalarioMin2: integer; Var DNIMin1, DNIMin2: string);
+Procedure DNIsConSalarioMinimo(d:Tdatos; DNI: string; Var SalarioMin1, SalarioMin2: integer; Var DNIMin1, DNIMin2: string);
 Begin
   if(d.salario<=SalarioMin2) then
-  Begin
-    SalarioMin2:= SalarioMin1;
-    SalarioMin1:= d.Salario;
-    DNIMin2:= DNIMin1;
-    DNIMin1:= DNI;
-  End 
+	  Begin
+		SalarioMin2:= SalarioMin1;
+		SalarioMin1:= d.Salario;
+		DNIMin2:= DNIMin1;
+		DNIMin1:= DNI;
+	  End 
   else
     if(d.salario<=SalarioMin2) then
     Begin
@@ -110,23 +110,13 @@ end;
 
 { Funcion de empleado cobra doble }
 
-function EmpleadoCobradoble(d: Tdatos): integer;
- var
-   CantCobranDoble: integer;
-   DobleSalario: integer;
-   i: integer;
- begin
-  CantCobranDoble:=0;
-  DobleSalario:=0;
-  CantCobranDoble:= 0;
-  for i:= 1 to 5 do
-  begin
-    if d.Salario > DobleSalario then
-    begin
-      DobleSalario:= d.Salario;
-      CantCobranDoble:= CantCobranDoble + 1;
-    end;
-  end;
+function EmpleadoCobradoble(d: Tdatos; Doble:integer): integer;
+var
+  cant:integer;
+begin
+    cant:=0;
+    if (d.Salario > Doble*2) then cant:= cant + 1;
+    EmpleadoCobradoble:=cant;
  end;
 
 { mucho textooo}
@@ -165,7 +155,7 @@ end;
 Var 
   dato : Tdatos;
   fin : boolean;
-  num,legajoMax,digitosuno,empleadosTotal,cantEmpleados300,cont50y600,total,SalarioMin1,SalarioMin2,Cant0,Salario,cantImpar,cantPar,CantCobranDoble,DobleSalario: integer;
+  num,legajoMax,digitosuno,empleadosTotal,cantEmpleados300,cont50y600,total,SalarioMin1,SalarioMin2,Cant0,cantImpar,cantPar,CantCobranDoble,DobleSalario: integer;
   salarioMax,salarioPromedio:real;
   salariosTotal: Longint;
   dniMin1, dniMin2,DNI: string;
@@ -231,7 +221,6 @@ Begin
 					 Begin
 						 empleadosTotal:=0;
 						 salariosTotal:=0;
-						 salariosPromedio:=0;
 						 CADPVolverAlInicio('DatosGrupo');
 						 Repeat
 							 CADPleerDato(dato,fin);
@@ -260,13 +249,13 @@ Begin
 
 		 Else If (num=5) Then
 					 Begin
-						 Salario:=0;
+						 DNI:='';
 						 SalarioMin1:=9999;
-                                                 SalarioMin2:=9999;
+                         SalarioMin2:=9999;
 						 CADPVolverAlInicio('DatosGrupo');
 						 Repeat
 							 CADPleerDato(dato,fin);
-						         DNIsConSalarioMinimo(dato,Salario,DNI,SalarioMin1,SalarioMin2,DNIMin1, DNIMin2);
+						         DNIsConSalarioMinimo(dato,DNI,SalarioMin1,SalarioMin2,DNIMin1, DNIMin2);
 						 Until (fin);						 
 						 writeln('La cantidad de 0 que poseen todos los legajos son: ',DNIMin1, DNIMin2);
 					         CADPfinalizarLectura();
@@ -314,18 +303,21 @@ Begin
 
 
 			Else if (num=9) then 
-				begin
-					  CADPVolverAlInicio('DatosGrupo');
-					Repeat
-					  EmpleadoCobraDoble(dato);
-					  DobleSalario:= dato.Salario * 2;
-					  CADPleerDato(dato,fin);
-					Until (fin);
-							
-					writeln('las veces en las que un empleado cobra mas del doble del anterior son: ',CantCobranDoble);
-					CADPfinalizarLectura();
-					
-				End;
-	leerInstruccion(num);			
+                begin
+                      CADPVolverAlInicio('DatosGrupo');
+                      CADPleerDato(dato,fin);
+                      DobleSalario:=dato.salario;
+                    Repeat
+                                          CADPleerDato(dato,fin);
+                      CantCobranDoble:=CantCobranDoble+EmpleadoCobraDoble(dato,DobleSalario);
+                      DobleSalario:=dato.salario;
+                    Until (fin);
+
+                    writeln('las veces en las que un empleado cobra mas del doble del anterior son: ',CantCobranDoble);
+                    CADPfinalizarLectura();
+
+                End;
+	leerInstruccion(num);
+	end;
 
 End.
