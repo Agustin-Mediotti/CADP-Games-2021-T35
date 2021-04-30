@@ -8,14 +8,6 @@ Program CADPGames;
 Uses 
 CADPDataLoader;
 
-{------------------Type-------------------}
-
-type 
-salarioMin= record
-		dniMin1, dniMin2,DNI: string;
-		i,SalarioMin1,SalarioMin2,Salario: integer;
-	end;
-
 {-----------------Procedures---------------}
 
 { procedure de ejemplo que imprime un registro completo }
@@ -29,18 +21,18 @@ End;
 
 Procedure DNIsConSalarioMinimo(d:Tdatos; DNI: string; Var SalarioMin1, SalarioMin2: integer; Var DNIMin1, DNIMin2: string);
 Begin
-  if(d.salario<=SalarioMin2) then
+  if(d.salario<=SalarioMin1) then
 	  Begin
 		SalarioMin2:= SalarioMin1;
 		SalarioMin1:= d.Salario;
 		DNIMin2:= DNIMin1;
-		DNIMin1:= DNI;
+		DNIMin1:= d.DNI;
 	  End 
   else
     if(d.salario<=SalarioMin2) then
     Begin
       SalarioMin2:= d.Salario;
-      dniMin2:= DNI;
+      dniMin2:= d.DNI;
     End;
 End;
 
@@ -257,7 +249,7 @@ Begin
 							 CADPleerDato(dato,fin);
 						         DNIsConSalarioMinimo(dato,DNI,SalarioMin1,SalarioMin2,DNIMin1, DNIMin2);
 						 Until (fin);						 
-						 writeln('La cantidad de 0 que poseen todos los legajos son: ',DNIMin1, DNIMin2);
+						 writeln('El DNI del empleado con salario mas chico es: ',dniMin1,' y el segundo menor es: ', DNIMin2);
 					         CADPfinalizarLectura();
 					 End
 		 Else if (num=6) then
